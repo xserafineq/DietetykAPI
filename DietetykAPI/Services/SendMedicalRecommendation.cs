@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using MailKit;
+using MailKit.Net.Smtp;
 using MimeKit;
 
 namespace DietetykAPI.Services
@@ -37,7 +38,7 @@ namespace DietetykAPI.Services
             message.Body = multipart;
 
             
-            using (var client = new SmtpClient())
+            using (var client = new SmtpClient(new ProtocolLogger("smtp.log")))
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
                 await client.AuthenticateAsync("dietetykplus2025@gmail.com", "fgxbaauuftpemenu");

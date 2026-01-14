@@ -94,4 +94,54 @@ public class MedicalResultsController : ControllerBase
     }
 
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutMedicalResult(int id, MedicalResultRecord medicalResult)
+    {
+        if (id != medicalResult.MedicalResultId)
+        {
+            return BadRequest("ID w ścieżce nie zgadza się z ID obiektu.");
+        }
+        if (medicalResult.height <= 0 || medicalResult.weight <= 0)
+        {
+            return BadRequest("Złe dane pomiarowe");
+        }
+        var entity = await _context.MedicalResults.FindAsync(id);
+
+        if (entity == null)
+        {
+            return NotFound($"Nie znaleziono pomiaru o ID {id}");
+        }
+        entity.weight = medicalResult.weight;
+        entity.height = medicalResult.height;
+        entity.bodyFat = medicalResult.bodyFat;
+        entity.waistLine = medicalResult.waistLine;
+        entity.sugarLevel = medicalResult.sugarLevel;
+
+        entity.bmi = Math.Round(medicalResult.weight / Math.Pow(medicalResult.height / 100.0, 2), 2);
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!MedicalResultExists(id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return NoContent(); 
+    }
+
+
+    private bool MedicalResultExists(int id)
+    {
+        return _context.MedicalResults.Any(e => e.MedicalResultId == id);
+    }
+
 }
