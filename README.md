@@ -1,5 +1,4 @@
 # DietetykAPI
 
-
-### API Stworzone dla Projektu: https://github.com/xserafineq/dietetykplus
-### Schemat Bazy Danych: https://github.com/xserafineq/DietetykAPI/blob/master/DietetykAPI/Database/schema.sql
+* **Projekt:** [DietetykPlus](https://github.com/xserafineq/dietetykplus)
+* **Baza danych:** [schema.sql](./DietetykAPI/Database/schema.sql)
